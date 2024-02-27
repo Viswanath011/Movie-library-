@@ -4,20 +4,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
-
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
-
-// Connect to MongoDB
 mongoose.connect('mongodb://localhost/weatherApp', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-// Weather Schema
 const weatherSchema = new mongoose.Schema({
   city: String,
   temperature: Number,
@@ -25,8 +19,6 @@ const weatherSchema = new mongoose.Schema({
   windSpeed: Number
 });
 const Weather = mongoose.model('Weather', weatherSchema);
-
-// Routes
 app.post('/weather', async (req, res) => {
   const { city, temperature, humidity, windSpeed } = req.body;
   const newWeather = new Weather({
